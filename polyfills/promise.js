@@ -1,4 +1,5 @@
-const STATUS = {
+debugger;
+STATUS = {
   pending: 'PENDING',
   fulfilled: 'FULFILLED',
   rejected: 'REJECTED',
@@ -38,8 +39,8 @@ class MyPromise {
   }
 
   handle() {
-    if (this.status === STATUS.rejected && this.microtaskQueue === 0) {
-      console.log('Unhandled promise rejection', this.value);
+    if (this.status === STATUS.rejected && this.microtaskQueue.length === 0) {
+      console.log('Unhandled promise rejection');
     }
 
     this.microtaskQueue.forEach((microtask) => {
@@ -66,7 +67,7 @@ class MyPromise {
 
   then(onResolved, onRejected) {
     const promise = new MyPromise(() => {});
-    this.deffered.push({
+    this.microtaskQueue.push({
       onResolved: typeof onResolved === 'function' ? onResolved : null,
       onRejected: typeof onRejected === 'function' ? onRejected : null,
       promise,
